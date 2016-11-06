@@ -1,6 +1,4 @@
-
 function varargout = gui1(varargin)
-
 % GUI1 MATLAB code for gui1.fig
 %      GUI1, by itself, creates a new GUI1 or raises the existing
 %      singleton*.
@@ -74,9 +72,7 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-
-global imgPath targetPath generateButton
-
+global imgPath, targetPath, generateButton
 
 
 % --- Executes on button press in generateButton.
@@ -90,7 +86,7 @@ assignin('base','imgPath',imgPath)
 targetPath = get(handles.targetPath,'String');
 assignin('base','targetPath',targetPath)
 
-generateButton = 1;
+generateButton = 123;
 assignin('base','generateButton',generateButton)
 
 
