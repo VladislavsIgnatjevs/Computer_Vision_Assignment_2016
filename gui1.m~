@@ -1,4 +1,6 @@
+
 function varargout = gui1(varargin)
+
 % GUI1 MATLAB code for gui1.fig
 %      GUI1, by itself, creates a new GUI1 or raises the existing
 %      singleton*.
@@ -22,7 +24,7 @@ function varargout = gui1(varargin)
 
 % Edit the above text to modify the response to help gui1
 
-% Last Modified by GUIDE v2.5 03-Nov-2016 23:11:18
+% Last Modified by GUIDE v2.5 07-Nov-2016 20:48:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -72,7 +74,9 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-global imgPath, targetPath, generateButton
+
+global numTiles numPixels generateButton output_folder_path InputFileName InputPathName InputFilterIndex input_folder_path
+
 
 
 % --- Executes on button press in generateButton.
@@ -81,13 +85,19 @@ function generateButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-imgPath = get(handles.imgPath,'String');
-assignin('base','imgPath',imgPath)
-targetPath = get(handles.targetPath,'String');
-assignin('base','targetPath',targetPath)
+%numTiles get, set and add to globals
+numTiles = get(handles.numTiles,'String');
+set(handles.numTiles,'String',numTiles);
+assignin('base','numTiles',numTiles)
 
-generateButton = 123;
-assignin('base','generateButton',generateButton)
+%numPixels get, set and add to globals
+numPixels = get(handles.numPixels,'String');
+assignin('base','numPixels',numPixels)
+set(handles.numPixels,'String',numPixels);
+
+%throw error if empty directory path since path cannot be empty  
+if isempty(InputPathName) 
+msgbox('Folder cannot be empty', 'Error');
 
 
 
@@ -144,6 +154,9 @@ function targetPath_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of targetPath as text
 %        str2double(get(hObject,'String')) returns contents of targetPath as a double
+%output filenames and path     
+ 
+
 
 % --- Executes during object creation, after setting all properties.
 function targetPath_CreateFcn(hObject, eventdata, handles)
@@ -168,6 +181,10 @@ function imgPath_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of imgPath as a double
 
 
+
+
+
+
 % --- Executes during object creation, after setting all properties.
 function imgPath_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to imgPath (see GCBO)
@@ -181,4 +198,48 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over imgPath.
 
+function imgPath_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to imgPath (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+%user dialog for selecting input folder or files
+choice = questdlg('Would like to select files or whole folder?', ...
+	'Select how images will be imported', ...
+	'Select Images','Select Folder','Cancel');
+
+% response
+switch choice
+    case 'Select Images'
+        
+        %input filenames and path
+        [InputFileName,InputPathName,InputFilterIndex] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
+         '*.*','All Files', },'MultiSelect','on');
+     set(handles.imgPath,'String',InputPathName);
+     
+     %assign to global vars
+     assignin('base','InputFileName',InputFileName);
+     assignin('base','InputPathName',InputPathName);
+     assignin('base','InputFilterIndex',InputFilterIndex);
+     
+    case 'Select Folder'
+        
+        %select folder    
+        input_folder_path = uigetdir;  
+        set(handles.imgPath,'String',input_folder_path);
+        assignin('base','input_folder_path',input_folder_path);
+    case 'Cancel'
+end
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over targetPath.
+function targetPath_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to targetPath (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+output_folder_path = uigetdir; 
+set(handles.targetPath,'String',output_folder_path);
+assignin('base','output_folder_path',output_folder_path);
