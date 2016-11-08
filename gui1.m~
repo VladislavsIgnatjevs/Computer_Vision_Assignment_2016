@@ -29,11 +29,11 @@ function varargout = gui1(varargin)
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @gui1_OpeningFcn, ...
-                   'gui_OutputFcn',  @gui1_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @gui1_OpeningFcn, ...
+    'gui_OutputFcn',  @gui1_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -65,7 +65,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = gui1_OutputFcn(hObject, eventdata, handles) 
+function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -75,7 +75,7 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-global numTiles numPixels generateButton output_folder_path InputFileName InputPathName InputFilterIndex input_folder_path
+global err numTiles numPixels generateButton output_folder_path InputFileName InputPathName InputFilterIndex input_folder_path
 
 
 
@@ -84,6 +84,7 @@ function generateButton_Callback(hObject, eventdata, handles)
 % hObject    handle to generateButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+err = 0;
 
 %numTiles get, set and add to globals
 numTiles = get(handles.numTiles,'String');
@@ -95,10 +96,32 @@ numPixels = get(handles.numPixels,'String');
 assignin('base','numPixels',numPixels)
 set(handles.numPixels,'String',numPixels);
 
-%throw error if empty directory path since path cannot be empty  
-if isempty(InputPathName) 
-msgbox('Folder cannot be empty', 'Error');
+%throw error if empty directory path since path cannot be empty
+%check if files were inputed or folder specified
+if isempty(get(handles.imgPath,'String'))
+    err = 1;
+    uiwait(msgbox('Input folder path cannot be empty', 'Error'));
+end
 
+%check if output folder was specified
+if isempty(get(handles.targetPath,'String'))
+    uiwait(msgbox('Output folder path cannot be empty', 'Error'));
+    err = 1;
+end
+
+%pass error var to workspace
+assignin('base','err',err);
+
+%break if any errors
+if err == 1;
+ % clear err generateButton input_folder_path InputFileName InputFilterIndex InputPathName numPixels numTiles output_folder_path source_imgs_dir_path target_imgs_dir_path
+  close all; 
+   
+else 
+    set(handles.targetPath, 'Enable', 'off');
+    set(handles.imgPath, 'Enable', 'off');
+    prepareEnvironment();
+end
 
 
 function numPixels_Callback(hObject, eventdata, handles)
@@ -154,8 +177,8 @@ function targetPath_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of targetPath as text
 %        str2double(get(hObject,'String')) returns contents of targetPath as a double
-%output filenames and path     
- 
+%output filenames and path
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -207,8 +230,8 @@ function imgPath_ButtonDownFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 %user dialog for selecting input folder or files
 choice = questdlg('Would like to select files or whole folder?', ...
-	'Select how images will be imported', ...
-	'Select Images','Select Folder','Cancel');
+    'Select how images will be imported', ...
+    'Select Images','Select Folder','Cancel');
 
 % response
 switch choice
@@ -216,18 +239,18 @@ switch choice
         
         %input filenames and path
         [InputFileName,InputPathName,InputFilterIndex] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
-         '*.*','All Files', },'MultiSelect','on');
-     set(handles.imgPath,'String',InputPathName);
-     
-     %assign to global vars
-     assignin('base','InputFileName',InputFileName);
-     assignin('base','InputPathName',InputPathName);
-     assignin('base','InputFilterIndex',InputFilterIndex);
-     
+            '*.*','All Files', },'MultiSelect','on');
+        set(handles.imgPath,'String',InputPathName);
+        
+        %assign to global vars
+        assignin('base','InputFileName',InputFileName);
+        assignin('base','input_folder_path',input_folder_path);
+        assignin('base','InputFilterIndex',InputFilterIndex);
+        
     case 'Select Folder'
         
-        %select folder    
-        input_folder_path = uigetdir;  
+        %select folder
+        input_folder_path = uigetdir;
         set(handles.imgPath,'String',input_folder_path);
         assignin('base','input_folder_path',input_folder_path);
     case 'Cancel'
@@ -240,6 +263,6 @@ function targetPath_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to targetPath (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-output_folder_path = uigetdir; 
+output_folder_path = uigetdir;
 set(handles.targetPath,'String',output_folder_path);
 assignin('base','output_folder_path',output_folder_path);
