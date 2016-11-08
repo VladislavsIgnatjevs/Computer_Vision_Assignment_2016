@@ -3,22 +3,15 @@ function prepareEnvironment(inputPath, outputPath, fileNameArray, numPixels, num
 
 %add to path enviroment if not empty
 
-global inputFiles outputFolder Image
+global inputFiles outputFolder
 
-% check if io paths are not empty
+% check if 
 if (~isempty(inputPath) ) && (~isempty(outputPath))
     
     % get all images file names in the folder if no image files were added 
     if isempty(fileNameArray)
         fileNameArray = dir([inputPath '/*.jpg']);
     end
-    
-    %convert every image in filename array to matrix
-    for k = 1:length(fileNameArray)
-        img_filename = [inputPath '/' fileNameArray(k).name];
-        Image = [Image,imread(img_filename)];
-    end
-    assignin('base','Image',Image);
     
     % assign image file names globally
     assignin('base','fileNameArray',fileNameArray);

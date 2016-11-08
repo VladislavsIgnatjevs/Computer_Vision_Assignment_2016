@@ -121,8 +121,14 @@ else
    
     set(handles.targetPath, 'Enable', 'off');
     set(handles.imgPath, 'Enable', 'off');
+    
+    %collect the rest of vars from the base workspace
+    input_folder_path = evalin('base', 'input_folder_path');
+    output_folder_path = evalin('base', 'output_folder_path');
+    InputFileName = evalin('base', 'InputFileName');
+    
   %  msgbox(err);
-   % prepareEnvironment(input_folder_path, output_folder_path, inputFileName, numPixels,numTiles);
+    prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixels,numTiles);
 end
 
 
@@ -239,9 +245,12 @@ choice = questdlg('Would like to select files or whole folder?', ...
 switch choice
     case 'Select Images'
         
-        %input filenames and path
-        [InputFileName,input_folder_path,InputFilterIndex] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
+        %input filenames and path 
+        
+        %fix so images added in column not in row
+        [InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
             '*.*','All Files', },'MultiSelect','on');
+        
         set(handles.imgPath,'String',input_folder_path);
         
         %assign to global vars

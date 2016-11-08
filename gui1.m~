@@ -118,9 +118,11 @@ if err == 1;
   close all; 
    
 else 
+   
     set(handles.targetPath, 'Enable', 'off');
     set(handles.imgPath, 'Enable', 'off');
-    prepareEnvironment();
+  %  msgbox(err);
+    prepareEnvironment(input_folder_path, output_folder_path, inputFileName, numPixels,numTiles);
 end
 
 
@@ -238,9 +240,9 @@ switch choice
     case 'Select Images'
         
         %input filenames and path
-        [InputFileName,InputPathName,InputFilterIndex] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
+        [InputFileName,input_folder_path,InputFilterIndex] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
             '*.*','All Files', },'MultiSelect','on');
-        set(handles.imgPath,'String',InputPathName);
+        set(handles.imgPath,'String',input_folder_path);
         
         %assign to global vars
         assignin('base','InputFileName',InputFileName);
