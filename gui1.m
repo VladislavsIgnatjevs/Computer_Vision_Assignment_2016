@@ -249,14 +249,14 @@ switch choice
         
         %fix so images added in column not in row
         [InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
-            '*.*','All Files', },'MultiSelect','on');
+},'MultiSelect','on');
         
         set(handles.imgPath,'String',input_folder_path);
         
         %assign to global vars
         assignin('base','InputFileName',InputFileName);
         assignin('base','input_folder_path',input_folder_path);
-        assignin('base','InputFilterIndex',InputFilterIndex);
+        %assignin('base','InputFilterIndex',InputFilterIndex);
         
     case 'Select Folder'
         

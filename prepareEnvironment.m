@@ -8,15 +8,20 @@ global inputFiles outputFolder Image
 % check if io paths are not empty
 if (~isempty(inputPath) ) && (~isempty(outputPath))
     
+    %convert selected files into appropriate format
+    if ~isempty(fileNameArray)
+        temp = fileNameArray.';
+        fileNameArray = struct('name',temp);
+    elseif isempty(fileNameArray)
+    
     % get all images file names in the folder if no image files were added 
-    if isempty(fileNameArray)
         fileNameArray = dir([inputPath '/*.jpg']);
     end
     
     %convert every image in filename array to matrix
     for k = 1:length(fileNameArray)
         img_filename = [inputPath '/' fileNameArray(k).name];
-        Image = [Image,imread(img_filename)];
+        Image{k} = imread(img_filename);
     end
     assignin('base','Image',Image);
     
