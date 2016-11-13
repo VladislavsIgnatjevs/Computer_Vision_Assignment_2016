@@ -20,5 +20,5 @@ for i=1:num%read all images into a cell array
     %temp=imgaussfilt(picCell{i,1},3);
     adjCell{i,1}=imresize(temp, [height width]);  %do gaussian filtering and resizing
 end
-out=adjCell{1}
+out=adjCell
 end
