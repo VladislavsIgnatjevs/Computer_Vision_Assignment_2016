@@ -1,6 +1,6 @@
-function [choose, k]=mosiac_main()
-tilesize=20;
-subsize=10;%size of sub tile
+function [choose, k]=mosiac_main()%hausdorffæ‡¿Î
+tilesize=40;
+subsize=20;%size of sub tile
 outHeight=1000;%output height
 outWidth=2000;
 r=int8(tilesize/subsize)
@@ -20,18 +20,22 @@ choose=zeros(ratioH,ratioW);
 chunk=mat2cell(adjTar,repmat(tilesize,[1 ratioH]),repmat(tilesize,[1 ratioW]),3);
 for i=1:1:ratioH
     for j=1:1:ratioW
+        i
+        j
         c=zeros(theSize(1),2);
         comp1=colorFeat(chunk{i,j},tilesize,subsize);
         for m=1:1:theSize(1)
             diff=comp1-colorCell{m,1};
             %k=double(ones(4,1));
-            k=0;
-            for x=1:1:r
-                for y=1:1:r
-                    k=k+diff(x,y,1)^2+diff(x,y,2)^2+diff(x,y,3)^2;                    
+            %k=0;
+            z=sum(diff.^2);
+            k=sum(z(:));
+            %for x=1:1:r
+            %    for y=1:1:r
+            %        k=k+diff(x,y,1)^2+diff(x,y,2)^2+diff(x,y,3)^2;                    
                     %c(m,1)=abs(diff);
-                end            
-            end 
+            %    end            
+            %end 
             %k1=diff(1,1,1)^2+diff(1,1,2)^2+diff(1,1,3)^2;
             %k2=diff(1,2,1)^2+diff(1,2,2)^2+diff(1,2,3)^2;
             %k3=diff(2,1,1)^2+diff(2,1,2)^2+diff(2,1,3)^2;
@@ -44,8 +48,18 @@ for i=1:1:ratioH
         end
         %[a,b]=min(c(:));
         sorted=sortrows(c);%sort the results
-        minSorted=sorted(1:20,:);%get 20 smallest values
-        num=randi(20);
+        minSorted=sorted(1:10,:);%get 20 smallest values
+        %b=edgeFeat(chunk{i,j},tilesize);
+        %h=zeros(20,2);
+        %for z=1:1:20
+        %    index=minSorted(z,2);
+        %    a=edgeFeat(temp{index,1},tilesize);
+        %    h(z,1)=hausdorff(a,b);
+        %    h(z,2)=index;
+        %end
+        %sorted2=sortrows(h);
+        %minSorted2=sorted2(1:10,:);
+        num=randi(10);
         which2get=minSorted(num,:);%random pick one
         get=temp{which2get(2),1};
         get=imresize(get,[tilesize tilesize]);
