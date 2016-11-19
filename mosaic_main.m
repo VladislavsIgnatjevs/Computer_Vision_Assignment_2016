@@ -1,4 +1,4 @@
-function [choose, k]=mosiac_main()%hausdorff¾àÀë
+function [choose, k]=mosaic_main()%hausdorffÂ¾Ã Ã€Ã«
 tilesize=40;
 subsize=20;%size of sub tile
 outHeight=1000;%output height
@@ -6,7 +6,7 @@ outWidth=2000;
 r=int8(tilesize/subsize)
 ratioH=int8(outHeight/tilesize)
 ratioW=int8(outWidth/tilesize)
-temp=mosiac(100,100);
+temp=mosaic(100,100);
 theSize=size(temp);
 colorCell=cell(theSize(1),1);
 for i=1:1:theSize(1);
