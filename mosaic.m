@@ -1,4 +1,4 @@
-function out=mosiac(h,w)%import and adjust RGB images (rough version)
+function out=mosaic(h,w)%import and adjust RGB images (rough version)
 height=h;
 width=w;   % pixels/tiles for both dimention
 urlman='./Images/manmade_training';
