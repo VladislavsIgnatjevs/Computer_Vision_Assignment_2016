@@ -8,7 +8,7 @@
 clear all
 
 
-global err numTiles numPixelsWidth numPixelsHeight generateButton output_folder_path InputFileName InputPathName InputFilterIndex input_folder_path input_training_path TrainingFileName fileNameArray out
+global err numTiles subtile numPixelsWidth numPixelsHeight generateButton output_folder_path InputFileName InputPathName InputFilterIndex input_folder_path input_training_path TrainingFileName fileNameArray out
 gui1;
 
 

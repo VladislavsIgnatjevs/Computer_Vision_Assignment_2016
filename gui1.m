@@ -24,7 +24,7 @@ function varargout = gui1(varargin)
 
 % Edit the above text to modify the response to help gui1
 
-% Last Modified by GUIDE v2.5 20-Nov-2016 00:53:59
+% Last Modified by GUIDE v2.5 21-Nov-2016 00:43:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,7 +75,7 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-global err numTiles numPixelsWidth numPixelsHeight generateButton output_folder_path InputFileName InputPathName input_training_path InputFilterIndex input_training_path TrainingFileName
+global err numTiles subtile numPixelsWidth numPixelsHeight generateButton output_folder_path InputFileName InputPathName input_training_path InputFilterIndex input_training_path TrainingFileName
 
 
 
@@ -90,6 +90,11 @@ err = 0;
 numTiles = get(handles.numTiles,'String');
 set(handles.numTiles,'String',numTiles);
 assignin('base','numTiles',numTiles)
+
+%numTiles get, set and add to globals
+subtile = get(handles.subtile,'String');
+set(handles.subtile,'String',subtile);
+assignin('base','subtile',subtile)
 
 %numPixelsWidth/numPixelsHeight get, set and add to globals
 numPixelsWidth = get(handles.numPixelsWidth,'String');
@@ -144,7 +149,7 @@ else
   %  msgbox(err);
  imgClassification =classify(input_folder_path);
  %0 for nature, 1 for manmade
- out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
+ out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), str2num(subtile), input_folder_path, imgClassification);
 %   out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
   %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
 end
@@ -181,7 +186,6 @@ function numTiles_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of numTiles as text
 %        str2double(get(hObject,'String')) returns contents of numTiles as a double
 
-
 % --- Executes during object creation, after setting all properties.
 function numTiles_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to numTiles (see GCBO)
@@ -194,7 +198,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+function subtile_Callback(hObject, eventdata, handles)
 
+function subtile_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to numTiles (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 function targetPath_Callback(hObject, eventdata, handles)
 % hObject    handle to targetPath (see GCBO)
@@ -325,6 +340,29 @@ function numPixelsHeight_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function numPixelsHeight_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to numPixelsHeight (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit9_Callback(hObject, eventdata, handles)
+% hObject    handle to subtile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of subtile as text
+%        str2double(get(hObject,'String')) returns contents of subtile as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to subtile (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

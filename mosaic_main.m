@@ -1,19 +1,15 @@
-% function [choose, k]=mosaic_main()%hausdorff¾àÀë
-
-function [choose, k]=mosaic_main(w,h, numTiles, input_folder_path, imgClassification)%hausdorff¾àÀë
-
-
+% function [choose, k]=mosaic_main()%hausdorff
+function [choose, k]=mosaic_main(w,h, numTiles, subtile, input_folder_path, imgClassification)%hausdorff
 % tilesize=40;
-
 tilesize=numTiles;
-subsize=20;%size of sub tile
-outHeight=1000;%output height
-outWidth=2000;
+subsize=subtile;%size of sub tile
+outHeight=h;%output height
+outWidth=w;
 r=int8(tilesize/subsize)
 ratioH=int8(outHeight/tilesize)
 ratioW=int8(outWidth/tilesize)
 %temp=mosaic(100,100);
-temp=mosaic1(w,h, numTiles, input_folder_path, imgClassification);
+temp=mosaic1(100,100, input_folder_path, imgClassification);
 
 theSize=size(temp);
 colorCell=cell(theSize(1),1);
@@ -28,12 +24,16 @@ output=cell(ratioH,ratioW);
 choose=zeros(ratioH,ratioW);
 chunk=mat2cell(adjTar,repmat(tilesize,[1 ratioH]),repmat(tilesize,[1 ratioW]),3);
 for i=1:1:ratioH
+    i
     for j=1:1:ratioW
-        i
         j
+        
         c=zeros(theSize(1),2);
         comp1=colorFeat(chunk{i,j},tilesize,subsize);
+        %comp2=chunk{i,j};
         for m=1:1:theSize(1)
+            
+            %comp1=imresize(temp{m,1},[tilesize tilesize]);
             diff=comp1-colorCell{m,1};
             %k=double(ones(4,1));
             %k=0;
@@ -52,8 +52,17 @@ for i=1:1:ratioH
             %ksquare=k.^2;
             %c(m,1)=sqrt(sum(ksquare(:)));
             %c(m,1)=sqrt(k1+k2+k3+k4);
-            c(m,1)=sqrt(k);
+            %c(m,1)=sqrt(k);
+            c(m,1)=k;
             c(m,2)=m;
+            %comhist1R=imhist(comp1(:,:,1),4);
+            %comhist1G=imhist(comp1(:,:,2),4);
+            %comhist1B=imhist(comp1(:,:,3),4);
+            %comhist2R=imhist(comp2(:,:,1),4);
+            %comhist2G=imhist(comp2(:,:,2),4);
+            %comhist2B=imhist(comp2(:,:,3),4);
+            %k2=(comhist1R-comhist2R).^2+(comhist1G-comhist2G).^2+(comhist1B-comhist2B).^2;
+            %c(m,1)=sum(k2(:));
         end
         %[a,b]=min(c(:));
         sorted=sortrows(c);%sort the results
