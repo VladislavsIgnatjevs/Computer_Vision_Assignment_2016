@@ -144,7 +144,8 @@ else
   %  msgbox(err);
  imgClassification =classify(input_folder_path);
  %0 for nature, 1 for manmade
-  out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
+ out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
+%   out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
   %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
 end
 

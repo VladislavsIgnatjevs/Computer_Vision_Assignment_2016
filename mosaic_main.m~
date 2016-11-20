@@ -1,28 +1,22 @@
-% function [choose, k]=mosaic_main()%hausdorff¾àÀë
-
-function [choose, k]=mosaic_main(w,h, numTiles, input_folder_path, imgClassification)%hausdorff¾àÀë
+function [choose, k]=mosaic_main(tilesize,subsize)%hausdorff¾àÀë
 
 
-% tilesize=40;
 
-tilesize=numTiles;
+tilesize=40;
 subsize=20;%size of sub tile
 outHeight=1000;%output height
 outWidth=2000;
 r=int8(tilesize/subsize)
 ratioH=int8(outHeight/tilesize)
 ratioW=int8(outWidth/tilesize)
-%temp=mosaic(100,100);
-temp=mosaic1(w,h, numTiles, input_folder_path, imgClassification);
-
+temp=mosaic(100,100);
 theSize=size(temp);
 colorCell=cell(theSize(1),1);
 for i=1:1:theSize(1);
     colorCell{i,1}=colorFeat(temp{i,1},tilesize,subsize);
 end;
 %%
-tar=imread(input_folder_path);%target image
-% tar=imread('o-LA-TIMES-BUILDING-facebook.jpg');%target image
+tar=imread('o-LA-TIMES-BUILDING-facebook.jpg');%target image
 adjTar=imresize(tar,[outHeight outWidth]);
 output=cell(ratioH,ratioW);
 choose=zeros(ratioH,ratioW);
@@ -84,10 +78,5 @@ for i=1:1:ratioH
     end
 end
 k=cell2mat(output);
-assignin('base','k',k);
-output_folder = evalin('base','output_folder_path');
-output_file = strcat(output_folder,'/output.jpg');
-
-imwrite(k,output_file);
 %k=uint8(double(adjTar)*0.5+half1*0.5);
 end
