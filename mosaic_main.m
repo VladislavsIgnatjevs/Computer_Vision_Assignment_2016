@@ -85,6 +85,9 @@ for i=1:1:ratioH
 end
 k=cell2mat(output);
 assignin('base','k',k);
+output_folder = evalin('base','output_folder_path');
+output_file = strcat(output_folder,'/output.jpg');
 
+imwrite(k,output_file);
 %k=uint8(double(adjTar)*0.5+half1*0.5);
 end
