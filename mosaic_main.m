@@ -1,4 +1,7 @@
 function [choose, k]=mosaic_main()%hausdorff¾àÀë
+
+
+
 tilesize=40;
 subsize=20;%size of sub tile
 outHeight=1000;%output height
@@ -32,10 +35,10 @@ for i=1:1:ratioH
             k=sum(z(:));
             %for x=1:1:r
             %    for y=1:1:r
-            %        k=k+diff(x,y,1)^2+diff(x,y,2)^2+diff(x,y,3)^2;                    
-                    %c(m,1)=abs(diff);
-            %    end            
-            %end 
+            %        k=k+diff(x,y,1)^2+diff(x,y,2)^2+diff(x,y,3)^2;
+            %c(m,1)=abs(diff);
+            %    end
+            %end
             %k1=diff(1,1,1)^2+diff(1,1,2)^2+diff(1,1,3)^2;
             %k2=diff(1,2,1)^2+diff(1,2,2)^2+diff(1,2,3)^2;
             %k3=diff(2,1,1)^2+diff(2,1,2)^2+diff(2,1,3)^2;

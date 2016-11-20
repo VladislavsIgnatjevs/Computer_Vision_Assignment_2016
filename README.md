@@ -8,3 +8,5 @@ authors:
 Vladislavs Ignatjevs
 Yang Xu
 Wei Li
+
+To run the project clone the repo and run "image_converter.m"
