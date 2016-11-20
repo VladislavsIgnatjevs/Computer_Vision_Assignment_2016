@@ -133,17 +133,18 @@ else
     %disable input fields
     set(handles.targetPath, 'Enable', 'off');
     set(handles.imgPath, 'Enable', 'off');
-    set(handles.pathToTraining, 'Enable', 'off');
+%     set(handles.pathToTraining, 'Enable', 'off');
     
     %collect the rest of vars from the base workspace
     input_folder_path = evalin('base', 'input_folder_path');
-    input_training_path =  evalin('base', 'input_training_path');
+%     input_training_path =  evalin('base', 'input_training_path');
     output_folder_path = evalin('base', 'output_folder_path');
     InputFileName = evalin('base', 'InputFileName');
     
   %  msgbox(err);
- 
-  out=mosaic1(numPixelsWidth, numPixelsHeight, numTiles, input_folder_path);
+ imgClassification =classify('input_folder_path');
+ %0 for nature, 1 for manmade
+  out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path);
   %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
 end
 
@@ -281,9 +282,16 @@ function imgPath_ButtonDownFcn(hObject, eventdata, handles)
 
 
         %select folder
-        input_folder_path = uigetdir;
-        set(handles.imgPath,'String',input_folder_path);
-        assignin('base','input_folder_path',input_folder_path);
+%         input_folder_path = uigetdir;
+%         set(handles.imgPath,'String',input_folder_path);
+%         assignin('base','input_folder_path',input_folder_path);
+
+[InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
+ },'MultiSelect','off');
+
+targetImageFullPath = strcat(input_folder_path,InputFileName);
+set(handles.imgPath,'String',targetImageFullPath);
+assignin('base','input_folder_path',targetImageFullPath);
         
         
 %     case 'Cancel'

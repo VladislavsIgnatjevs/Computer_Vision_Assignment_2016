@@ -47,7 +47,11 @@ train_edge=train_edge(:,1:vector_length);
 class2=knnclassify(temp_edge,train_edge,group_train,K2,'euclidean','random');
 
 if class1==0 && class2==0
+    %classify as manmade
     y=0;
 else
+    %classify as naturmade
     y=1;
 end
+assignin('base','imgClassification',y);
+

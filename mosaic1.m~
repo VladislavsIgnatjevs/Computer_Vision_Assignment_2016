@@ -1,6 +1,7 @@
-function out=mosaic1(w,h, numTiles, input_folder_path)%import and adjust RGB images (rough version)
+function out=mosaic1(w,h, numTiles, input_folder_path, imgClassification)%import and adjust RGB images (rough version)
 height=h;
 width=w; 
+
 
 % pixels/tiles for both dimention
 urlman='./Images/manmade_training';
@@ -11,12 +12,22 @@ man=textscan(fileID1,'%s','delimiter','\n');
 nat=textscan(fileID2,'%s','delimiter','\n');
 man=man{1};
 nat=nat{1};%get lists of filenames
-cd(urlman);
-num=length(man);%number of files of manmade, assume taking manmade images here
+
+%if 1 do naturalmade, elseif 0 do manmade
+if imgClassification == 0
+    target_array = man;
+    target_path = urlman;
+elseif imgClassification == 1
+    target_array = nat;
+    target_path = urlnat;
+end    
+
+cd(target_path);
+num=length(target_array);%number of files of manmade, assume taking manmade images here
 picCell=cell(num,1);
 adjCell=cell(num,1);
 for i=1:num%read all images into a cell array
-    picCell{i,1}=imread(char(man(i)));
+    picCell{i,1}=imread(char(target_array(i)));
     gauss = fspecial('gaussian',10,3);
     temp=imfilter(picCell{i,1},gauss);
     %temp=imgaussfilt(picCell{i,1},3);
@@ -25,4 +36,7 @@ end
 out=adjCell;
 assignin('base','out',out);
 
+cd('../../');
+
 end
+
