@@ -1,4 +1,4 @@
-function out=mosaic1(w,h, numTiles, input_folder_path, imgClassification)%import and adjust RGB images (rough version)
+function out=mosaic1(w,h, input_folder_path, imgClassification)%import and adjust RGB images (rough version)
 height=h;
 width=w; 
 
@@ -27,16 +27,17 @@ num=length(target_array);%number of files of manmade, assume taking manmade imag
 picCell=cell(num,1);
 adjCell=cell(num,1);
 for i=1:num%read all images into a cell array
+    i
     picCell{i,1}=imread(char(target_array(i)));
-    gauss = fspecial('gaussian',10,3);
+    gauss = fspecial('gaussian',20,100);
     temp=imfilter(picCell{i,1},gauss);
     %temp=imgaussfilt(picCell{i,1},3);
     adjCell{i,1}=imresize(temp, [height width]);  %do gaussian filtering and resizing
 end
 out=adjCell;
-assignin('base','out',out);
-tilesize = evalin('base','numTiles');
-subsize = w;
+%assignin('base','out',out);
+%tilesize = evalin('base','numTiles');
+%subsize = w;
 
 cd('../../');
 

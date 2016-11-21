@@ -1,5 +1,5 @@
 % prepares environment and converts files to matrices
-function prepareEnvironment(inputPath, outputPath, fileNameArray, numPixels, numTiles)
+function prepareEnvironment(inputPath, outputPath, fileNameArray, numPixels, numTiles, subtile)
 
 %add to path enviroment if not empty
 
