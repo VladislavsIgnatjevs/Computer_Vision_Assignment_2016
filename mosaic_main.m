@@ -1,25 +1,38 @@
 function [choose, k]=mosaic_main(w,h, numTiles, subtile, input_folder_path, imgClassification)%hausdorff
-% tilesize=40;
+
+% tile size
 tilesize=numTiles;
-subsize=subtile;%size of sub tile
-outHeight=h;%output height
+
+%size of sub tile
+subsize=subtile;
+
+%output height, width
+outHeight=h;
 outWidth=w
+
+%calculate ratios
 r=int8(tilesize/subsize)
 ratioH=int32(outHeight/tilesize)
 ratioW=int32(outWidth/tilesize)
+
 temp=mosaic1(100,100, input_folder_path, imgClassification);
 
 theSize=size(temp);
 colorCell=cell(theSize(1),1);
+
+%adjust images
 for i=1:1:theSize(1);
     colorCell{i,1}=colorFeat(temp{i,1},tilesize,subsize);
 end;
 %%
-tar=imread(input_folder_path);%target image
+
+%read target image
+tar=imread(input_folder_path);
 adjTar=imresize(tar,[outHeight outWidth]);
 output=cell(ratioH,ratioW);
 choose=zeros(ratioH,ratioW);
 chunk=mat2cell(adjTar,repmat(tilesize,[1 ratioH]),repmat(tilesize,[1 ratioW]),3);
+
 for i=1:1:ratioH
     i
     for j=1:1:ratioW
@@ -37,11 +50,15 @@ for i=1:1:ratioH
             
         end
         
-        sorted=sortrows(c);%sort the results
-        minSorted=sorted(1:10,:);%get 20 smallest values
+        %sort the results
+        sorted=sortrows(c);
+        %get 20 smallest values
+        minSorted=sorted(1:10,:);
         
         num=randi(10);
-        which2get=minSorted(num,:);%random pick one
+        
+        %randomly pick one
+        which2get=minSorted(num,:);
         get=temp{which2get(2),1};
         get=imresize(get,[tilesize tilesize]);
         get=rgb2hsv(get);
@@ -60,8 +77,13 @@ orihsv=rgb2hsv(adjTar);
 origin=hsv2rgb(orihsv);
 
 theout=cell2mat(output);
+
 k=theout*0.9+origin*0.1;
+
+%assign to base for debug purposes
 assignin('base','k',k);
+
+%write image into output folder
 output_folder = evalin('base','output_folder_path');
 output_file = strcat(output_folder,'/output.jpg');
 
