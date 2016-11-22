@@ -12,4 +12,5 @@ Wei Li
 Matlab project.
 To run the project clone the repo and run "image_converter.m"
 
-Precision score of the classification model - 70%
+Measured precisision for classification model - 70%
+
