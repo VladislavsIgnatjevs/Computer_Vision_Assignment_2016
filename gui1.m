@@ -24,7 +24,7 @@ function varargout = gui1(varargin)
 
 % Edit the above text to modify the response to help gui1
 
-% Last Modified by GUIDE v2.5 20-Nov-2016 00:53:59
+% Last Modified by GUIDE v2.5 21-Nov-2016 00:43:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,7 +75,7 @@ function varargout = gui1_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-global err numTiles numPixelsWidth numPixelsHeight generateButton output_folder_path InputFileName InputPathName input_training_path InputFilterIndex input_training_path TrainingFileName
+global err numTiles subtile numPixelsWidth numPixelsHeight generateButton output_folder_path InputFileName InputPathName input_training_path InputFilterIndex input_training_path TrainingFileName
 
 
 
@@ -90,6 +90,11 @@ err = 0;
 numTiles = get(handles.numTiles,'String');
 set(handles.numTiles,'String',numTiles);
 assignin('base','numTiles',numTiles)
+
+%numTiles get, set and add to globals
+subtile = get(handles.subtile,'String');
+set(handles.subtile,'String',subtile);
+assignin('base','subtile',subtile)
 
 %numPixelsWidth/numPixelsHeight get, set and add to globals
 numPixelsWidth = get(handles.numPixelsWidth,'String');
@@ -125,28 +130,28 @@ assignin('base','err',err);
 
 %break if any errors
 if err == 1;
- % clear err generateButton input_folder_path InputFileName InputFilterIndex InputPathName numPixelsWidth numTiles output_folder_path source_imgs_dir_path target_imgs_dir_path
-  close all; 
-   
-else 
-   
+    % clear err generateButton input_folder_path InputFileName InputFilterIndex InputPathName numPixelsWidth numTiles output_folder_path source_imgs_dir_path target_imgs_dir_path
+    close all;
+    
+else
+    
     %disable input fields
     set(handles.targetPath, 'Enable', 'off');
     set(handles.imgPath, 'Enable', 'off');
-%     set(handles.pathToTraining, 'Enable', 'off');
+    %     set(handles.pathToTraining, 'Enable', 'off');
     
     %collect the rest of vars from the base workspace
     input_folder_path = evalin('base', 'input_folder_path');
-%     input_training_path =  evalin('base', 'input_training_path');
+    %     input_training_path =  evalin('base', 'input_training_path');
     output_folder_path = evalin('base', 'output_folder_path');
     InputFileName = evalin('base', 'InputFileName');
     
-  %  msgbox(err);
- imgClassification =classify(input_folder_path);
- %0 for nature, 1 for manmade
- out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
-%   out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
-  %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
+    %  msgbox(err);
+    imgClassification =classify(input_folder_path);
+    %0 for nature, 1 for manmade
+    out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), str2num(subtile), input_folder_path, imgClassification);
+    %   out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
+    %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
 end
 
 
@@ -181,7 +186,6 @@ function numTiles_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of numTiles as text
 %        str2double(get(hObject,'String')) returns contents of numTiles as a double
 
-
 % --- Executes during object creation, after setting all properties.
 function numTiles_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to numTiles (see GCBO)
@@ -194,7 +198,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+function subtile_Callback(hObject, eventdata, handles)
 
+function subtile_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to numTiles (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 function targetPath_Callback(hObject, eventdata, handles)
 % hObject    handle to targetPath (see GCBO)
@@ -260,41 +275,41 @@ function imgPath_ButtonDownFcn(hObject, eventdata, handles)
 % choice = questdlg('Would like to select files or whole folder?', ...
 %     'Select how images will be imported', ...
 %     'Select Images','Select Folder','Cancel');
-% 
+%
 % % response
 % switch choice
 %     case 'Select Images'
-        
-        %input filenames and path 
-        
-        %fix so images added in column not in row
+
+%input filenames and path
+
+%fix so images added in column not in row
 %         [InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
 % },'MultiSelect','on');
-%         
+%
 %         set(handles.imgPath,'String',input_folder_path);
-%         
+%
 %         %assign to global vars
 %         assignin('base','InputFileName',InputFileName);
 %         assignin('base','input_folder_path',input_folder_path);
-        %assignin('base','InputFilterIndex',InputFilterIndex);
-        
+%assignin('base','InputFilterIndex',InputFilterIndex);
+
 %     case 'Select Folder'
-%         
+%
 
 
-        %select folder
+%select folder
 %         input_folder_path = uigetdir;
 %         set(handles.imgPath,'String',input_folder_path);
 %         assignin('base','input_folder_path',input_folder_path);
 
 [InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
- },'MultiSelect','off');
+    },'MultiSelect','off');
 
 targetImageFullPath = strcat(input_folder_path,InputFileName);
 set(handles.imgPath,'String',targetImageFullPath);
 assignin('base','input_folder_path',targetImageFullPath);
-        
-        
+
+
 %     case 'Cancel'
 % end
 
@@ -325,6 +340,29 @@ function numPixelsHeight_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function numPixelsHeight_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to numPixelsHeight (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit9_Callback(hObject, eventdata, handles)
+% hObject    handle to subtile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of subtile as text
+%        str2double(get(hObject,'String')) returns contents of subtile as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to subtile (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
