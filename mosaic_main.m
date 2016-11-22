@@ -4,10 +4,10 @@ function [choose, k]=mosaic_main(w,h, numTiles, subtile, input_folder_path, imgC
 tilesize=numTiles;
 subsize=subtile;%size of sub tile
 outHeight=h;%output height
-outWidth=w;
+outWidth=w
 r=int8(tilesize/subsize)
-ratioH=int8(outHeight/tilesize)
-ratioW=int8(outWidth/tilesize)
+ratioH=int32(outHeight/tilesize)
+ratioW=int32(outWidth/tilesize)
 %temp=mosaic(100,100);
 temp=mosaic1(100,100, input_folder_path, imgClassification);
 
@@ -26,8 +26,7 @@ chunk=mat2cell(adjTar,repmat(tilesize,[1 ratioH]),repmat(tilesize,[1 ratioW]),3)
 for i=1:1:ratioH
     i
     for j=1:1:ratioW
-        j
-        
+        j     
         c=zeros(theSize(1),2);
         comp1=colorFeat(chunk{i,j},tilesize,subsize);
         %comp2=chunk{i,j};
@@ -37,21 +36,11 @@ for i=1:1:ratioH
             diff=comp1-colorCell{m,1};
             %k=double(ones(4,1));
             %k=0;
-            z=sum(diff.^2);
-            k=sum(z(:));
-            %for x=1:1:r
-            %    for y=1:1:r
-            %        k=k+diff(x,y,1)^2+diff(x,y,2)^2+diff(x,y,3)^2;
-            %c(m,1)=abs(diff);
-            %    end
-            %end
-            %k1=diff(1,1,1)^2+diff(1,1,2)^2+diff(1,1,3)^2;
-            %k2=diff(1,2,1)^2+diff(1,2,2)^2+diff(1,2,3)^2;
-            %k3=diff(2,1,1)^2+diff(2,1,2)^2+diff(2,1,3)^2;
-            %k4=diff(2,2,1)^2+diff(2,2,2)^2+diff(2,2,3)^2;
-            %ksquare=k.^2;
-            %c(m,1)=sqrt(sum(ksquare(:)));
-            %c(m,1)=sqrt(k1+k2+k3+k4);
+
+                z=sum(diff.^2);
+                k=sum(z(:));
+
+
             %c(m,1)=sqrt(k);
             c(m,1)=k;
             c(m,2)=m;
@@ -86,13 +75,26 @@ for i=1:1:ratioH
         origin=rgb2hsv(origin);
         ratio=mean2(origin(:,:,3))/mean2(get(:,:,3));
         get(:,:,3)=get(:,:,3)*ratio;
+        ratio2=mean2(origin(:,:,2))/mean2(get(:,:,2));
+        get(:,:,2)=get(:,:,2)*ratio2;
+
+        %if which2get(1)>iter*6000
+            %ratio3=mean2(origin(:,:,1))/mean2(get(:,:,1));
+            %get(:,:,1)=get(:,:,1)*ratio3;
+        %end
+       % ratio3=mean2(origin(:,:,1))/mean2(get(:,:,1));
+       % get(:,:,1)=get(:,:,1)*ratio3;
         get=hsv2rgb(get);
         output{i,j}=get;
         %output{i,j}=imresize(temp{b,1},[20 20]);
         choose(i,j)=which2get(2);
     end
 end
-k=cell2mat(output);
+orihsv=rgb2hsv(adjTar);
+origin=hsv2rgb(orihsv);
+
+theout=cell2mat(output);
+k=theout;%*0.8+origin*0.2;
 assignin('base','k',k);
 output_folder = evalin('base','output_folder_path');
 output_file = strcat(output_folder,'/output.jpg');
