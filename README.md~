@@ -12,5 +12,15 @@ Wei Li
 Matlab project.
 To run the project clone the repo and run "image_converter.m"
 
-Measured precisision for classification model - 70%
+Precision score of the classification model:
 
+
+
+Computation Time - 0.101s
+Error of Manmade - 32.4%
+Error of Natural - 
+Overall Accuracy
+
+
+
+72.6%
