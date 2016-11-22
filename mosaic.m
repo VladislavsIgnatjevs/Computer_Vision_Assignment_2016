@@ -1,5 +1,5 @@
 
-% preprocess images. 
+% preprocess images.
 % @param h (height)
 % @param w (width)
 % @param urlman (path to manmade training directory)
@@ -12,40 +12,32 @@ function out=mosaic(h,w,urlman, pathManTraining)
 
 % pixels/tiles for both dimention
 height=h;
-width=w;   
-%urlman='./Images/manmade_training';
-%urlnat='./Images/natural_training';
+width=w;
 
 fileID1 = fopen(pathManTraining,'r');
-
-%fileID2 = fopen(pathNatTraining,'r');
-
-%fileID1 = fopen('./Images/manmade_training/manmade_training.txt','r');
-%fileID2 = fopen('./Images/natural_training/natural_training.txt','r');
 man=textscan(fileID1,'%s','delimiter','\n');
-%nat=textscan(fileID2,'%s','delimiter','\n');
+
+% get lists of filenames
 man=man{1};
-%nat=nat{1};%get lists of filenames
+
 
 %cd to folder with images
 cd(urlman);
-num=length(man);%number of files of manmade, assume taking manmade images here
+
+%number of files of manmade, assume taking manmade images here
+num=length(man);
 picCell=cell(num,1);
 adjCell=cell(num,1);
 
 
 %loop through all the images withing this folder
-for i=1:num%read all images into a cell array
-    
-%     temp = char(man(i));
-%     temp = temp(3:end);
-%     msgbox(temp);
-    
+%and read all images into a cell array
+for i=1:num
     picCell{i,1}=imread(char(man(i)));
     gauss = fspecial('gaussian',10,3);
     temp=imfilter(picCell{i,1},gauss);
-    %temp=imgaussfilt(picCell{i,1},3);
-    adjCell{i,1}=imresize(temp, [height width]);  %do gaussian filtering and resizing
+    %do gaussian filtering and resizing
+    adjCell{i,1}=imresize(temp, [height width]);
 end
 out=adjCell;
 end

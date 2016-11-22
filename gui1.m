@@ -130,28 +130,28 @@ assignin('base','err',err);
 
 %break if any errors
 if err == 1;
- % clear err generateButton input_folder_path InputFileName InputFilterIndex InputPathName numPixelsWidth numTiles output_folder_path source_imgs_dir_path target_imgs_dir_path
-  close all; 
-   
-else 
-   
+    % clear err generateButton input_folder_path InputFileName InputFilterIndex InputPathName numPixelsWidth numTiles output_folder_path source_imgs_dir_path target_imgs_dir_path
+    close all;
+    
+else
+    
     %disable input fields
     set(handles.targetPath, 'Enable', 'off');
     set(handles.imgPath, 'Enable', 'off');
-%     set(handles.pathToTraining, 'Enable', 'off');
+    %     set(handles.pathToTraining, 'Enable', 'off');
     
     %collect the rest of vars from the base workspace
     input_folder_path = evalin('base', 'input_folder_path');
-%     input_training_path =  evalin('base', 'input_training_path');
+    %     input_training_path =  evalin('base', 'input_training_path');
     output_folder_path = evalin('base', 'output_folder_path');
     InputFileName = evalin('base', 'InputFileName');
     
-  %  msgbox(err);
- imgClassification =classify(input_folder_path);
- %0 for nature, 1 for manmade
- out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), str2num(subtile), input_folder_path, imgClassification);
-%   out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
-  %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
+    %  msgbox(err);
+    imgClassification =classify(input_folder_path);
+    %0 for nature, 1 for manmade
+    out=mosaic_main(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), str2num(subtile), input_folder_path, imgClassification);
+    %   out=mosaic1(str2num(numPixelsWidth), str2num(numPixelsHeight), str2num(numTiles), input_folder_path, imgClassification);
+    %prepareEnvironment(input_folder_path, output_folder_path, InputFileName, numPixelsWidth,numTiles);
 end
 
 
@@ -275,41 +275,41 @@ function imgPath_ButtonDownFcn(hObject, eventdata, handles)
 % choice = questdlg('Would like to select files or whole folder?', ...
 %     'Select how images will be imported', ...
 %     'Select Images','Select Folder','Cancel');
-% 
+%
 % % response
 % switch choice
 %     case 'Select Images'
-        
-        %input filenames and path 
-        
-        %fix so images added in column not in row
+
+%input filenames and path
+
+%fix so images added in column not in row
 %         [InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
 % },'MultiSelect','on');
-%         
+%
 %         set(handles.imgPath,'String',input_folder_path);
-%         
+%
 %         %assign to global vars
 %         assignin('base','InputFileName',InputFileName);
 %         assignin('base','input_folder_path',input_folder_path);
-        %assignin('base','InputFilterIndex',InputFilterIndex);
-        
+%assignin('base','InputFilterIndex',InputFilterIndex);
+
 %     case 'Select Folder'
-%         
+%
 
 
-        %select folder
+%select folder
 %         input_folder_path = uigetdir;
 %         set(handles.imgPath,'String',input_folder_path);
 %         assignin('base','input_folder_path',input_folder_path);
 
 [InputFileName,input_folder_path] = uigetfile({'*.jpg;*.tif;*.png;*.gif','All Image Files';...
- },'MultiSelect','off');
+    },'MultiSelect','off');
 
 targetImageFullPath = strcat(input_folder_path,InputFileName);
 set(handles.imgPath,'String',targetImageFullPath);
 assignin('base','input_folder_path',targetImageFullPath);
-        
-        
+
+
 %     case 'Cancel'
 % end
 

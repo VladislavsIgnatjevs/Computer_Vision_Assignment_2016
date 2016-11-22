@@ -10,6 +10,7 @@ for i=1:1:ratio
         g=rgb(:,:,2);
         b=rgb(:,:,3);
         %temp(i,j)=sqrt(mean2(r(:))^2+mean2(g(:))^2+mean2(b(:))^2);
+        
         temp(i,j,1)=mean2(r(:));
         temp(i,j,2)=mean2(g(:));
         temp(i,j,3)=mean2(b(:));
