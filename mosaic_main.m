@@ -94,7 +94,7 @@ orihsv=rgb2hsv(adjTar);
 origin=hsv2rgb(orihsv);
 
 theout=cell2mat(output);
-k=theout;%*0.8+origin*0.2;
+k=theout*0.8+origin*0.2;
 assignin('base','k',k);
 output_folder = evalin('base','output_folder_path');
 output_file = strcat(output_folder,'/output.jpg');
