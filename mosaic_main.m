@@ -52,12 +52,12 @@ for i=1:1:ratioH
         
         %sort the results
         sorted=sortrows(c);
-        %get 20 smallest values
+        %get 10 smallest values
         minSorted=sorted(1:10,:);
         
         num=randi(10);
         
-        %randomly pick one
+        %randomly pick one and adjust brightness and saturation
         which2get=minSorted(num,:);
         get=temp{which2get(2),1};
         get=imresize(get,[tilesize tilesize]);
@@ -78,7 +78,7 @@ origin=hsv2rgb(orihsv);
 
 theout=cell2mat(output);
 
-k=theout*0.9+origin*0.1;
+k=theout*0.8+origin*0.2;%blend with original target image
 
 %assign to base for debug purposes
 assignin('base','k',k);
