@@ -1,6 +1,9 @@
+%this is for sigle image classification
+
 function y=classify(target_pic)
 
 
+%initialization
 height=100;
 width=100;
 gauss = fspecial('gaussian',10,3);
@@ -10,7 +13,7 @@ load('coeff_hist.mat','coeff_hist');
 load('coeff_edge.mat','coeff_edge');
 K1=19;
 K2=394;
-threshold=0.10;
+threshold=0.10; %threshold for edge extraction
 
 
 temp_im=imread(target_pic);
@@ -46,6 +49,8 @@ vector_length=row_length-1;
 train_edge=train_edge(:,1:vector_length);
 class2=knnclassify(temp_edge,train_edge,group_train,K2,'euclidean','random');
 
+
+%result
 if class1==0 && class2==0
     y=0;
 else
